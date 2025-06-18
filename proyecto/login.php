@@ -29,7 +29,11 @@ if ($stmt->rowCount() > 0) {
         $_SESSION['usuario'] = $dadosUsuario['usuario'];
         $_SESSION['email']   = $dadosUsuario['email']; // pode usar depois se precisar
 
-        header("Location: cliente.php");
+        if ($dadosUsuario['usuario'] === 'admin') {
+            header("Location: admin.php");
+        } else {
+            header("Location: cliente.php");
+        }
         exit();
     } else {
         header('Location: login_index.php?error=' . urlencode("Senha incorreta!"));
