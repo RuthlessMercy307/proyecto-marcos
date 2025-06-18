@@ -26,6 +26,9 @@ if (!isset($_SESSION['usuario'])) {
                 <a href="#ofertas" class="nav-link">Ofertas</a>
                 <a href="#contacto" class="nav-link">Contato</a>
                 <a href="dados.php" class="nav-link">Meus Dados</a>
+                <?php if ($_SESSION['usuario'] === 'admin'): ?>
+                    <a href="admin.php" class="nav-link">Admin</a>
+                <?php endif; ?>
                 <a href="logout.php" class="nav-link active">Sair</a>
             </nav>
         </div>
