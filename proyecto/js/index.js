@@ -1,68 +1,13 @@
 
-const menuItems = [
-    {
-        name: '5 queijos',
-        description: 'Molho de tomate especial, mussarela ralada, provolone, parmessão, catupiry, cheddar, oregano e azeitonas',
-        price: 37.00,
-        image: 'pizzas/5_queijos.png',
-        sizes: [
-            { name: 'Pequena', price: 37.00 },
-            { name: 'Média', price: 78.50 },
-            { name: 'Grande', price: 105.00 }
-        ]
-    },
-    {
-        name: '3 Porquinhos',
-        description: 'Molho de tomate especial, mussarela, lombo canadense, calabresa fatiada, bacon, oregano e azeitonas',
-        price: 37.00,
-        image: 'pizzas/3_porcos.png',
-        sizes: [
-            { name: 'Pequena', price: 37.00 },
-            { name: 'Média', price: 78.50 },
-            { name: 'Grande', price: 105.00 }
-        ]
-    },
-    {
-        name: 'Bauru',
-        description: 'Molho de tomate especial, mussarela ralada, coxão mole em tiras, tomate em rodelas, orégano e azeitonas',
-        price: 40.00,
-        image: 'pizzas/bauru.png',
-        sizes: [
-            { name: 'Pequena', price: 40.00 },
-            { name: 'Média', price: 78.50 },
-            { name: 'Grande', price: 105.00 }
-        ]
-    },
-    {
-        name: 'Brocolis Especial',
-        description: 'Molho de tomate especial, mussarela ralada, Brocolis refogado, bacon em cubos, catupiry, alho frito, orégano e azeitonas',
-        price: 40.00,
-        image: 'pizzas/brocolis.png',
-        sizes: [
-            { name: 'Pequena', price: 40.00 },
-            { name: 'Média', price: 78.50 },
-            { name: 'Grande', price: 105.00 }
-        ]
-    },
-    {
-        name: 'California',
-        description: 'Molho de tomate especial, mussarela ralada, calabresa fatiada, abacaxi cortado, catupiry, orégano e azeitonas',
-        price: 40.00,
-        image: 'pizzas/california.png',
-        sizes: [
-            { name: 'Pequena', price: 40.00 },
-            { name: 'Média', price: 78.50 },
-            { name: 'Grande', price: 105.00 }
-        ]
-    },
-];
+let menuItems = [];
 
 let cart = [];
 let total = 0;
 
-function initMenu() {
+function renderMenu() {
     const menuContainer = document.getElementById('menuContainer');
-    
+    menuContainer.innerHTML = '';
+
     menuItems.forEach(item => {
         const menuItem = document.createElement('div');
         menuItem.className = 'menu-item';
@@ -175,11 +120,13 @@ document.querySelector('.menu-hamburguer').addEventListener('click', function() 
 });
 
 document.getElementById('searchInput').addEventListener('input', (e) => {
-    const searchTerm = e.target.value.toLowerCase();
-    document.querySelectorAll('.menu-item').forEach(item => {
-        const title = item.querySelector('.item-title').textContent.toLowerCase();
-        item.style.display = title.includes(searchTerm) ? 'block' : 'none';
-    });
+    loadMenu(e.target.value);
 });
 
-document.addEventListener('DOMContentLoaded', initMenu);
+async function loadMenu(term = '') {
+    const res = await fetch(`menu.php?q=${encodeURIComponent(term)}`);
+    menuItems = await res.json();
+    renderMenu();
+}
+
+document.addEventListener('DOMContentLoaded', () => loadMenu());
